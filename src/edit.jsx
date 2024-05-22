@@ -147,7 +147,7 @@ export default function Edit({ attributes, setAttributes }) {
 						</svg>
 					</button>
 					<div
-						className="posts_wrapper"
+						className="posts_wrapper editor_posts_wrapper"
 						style={{
 							gridTemplateColumns: `repeat(${sliderItemCount}, minmax(0, 1fr))`,
 						}}
@@ -164,12 +164,14 @@ export default function Edit({ attributes, setAttributes }) {
 										{post?._embedded?.["wp:featuredmedia"]
 											?.slice(0, 1)
 											?.map((item, index) => {
-												return (
+												return item?.media_details?.sizes?.full?.source_url ? (
 													<img
 														key={index}
 														src={item?.media_details?.sizes?.full?.source_url}
 														alt={post?.title?.rendered}
 													/>
+												) : (
+													""
 												);
 											})}
 									</a>
@@ -242,7 +244,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 									{showDesc && post?.excerpt?.rendered ? (
 										<p
-											style={{ color: authorDescColor }}
+											style={{ color: descColor }}
 											dangerouslySetInnerHTML={{
 												__html: post?.excerpt?.rendered,
 											}}
@@ -358,6 +360,12 @@ export default function Edit({ attributes, setAttributes }) {
 						help="Show and hide the date in front end."
 					/>
 					<ToggleControl
+						label={__("Show meta", "blog-post")}
+						checked={showMeta}
+						onChange={(value) => setAttributes({ showMeta: value })}
+						help="Show and hide the meta in front end."
+					/>
+					<ToggleControl
 						label={__("Show title", "blog-post")}
 						checked={showTitle}
 						onChange={(value) => setAttributes({ showTitle: value })}
@@ -368,12 +376,6 @@ export default function Edit({ attributes, setAttributes }) {
 						checked={showDesc}
 						onChange={(value) => setAttributes({ showDesc: value })}
 						help="Show and hide the desc in front end."
-					/>
-					<ToggleControl
-						label={__("Show meta", "blog-post")}
-						checked={showMeta}
-						onChange={(value) => setAttributes({ showMeta: value })}
-						help="Show and hide the meta in front end."
 					/>
 					<ToggleControl
 						label={__("Show author", "blog-post")}

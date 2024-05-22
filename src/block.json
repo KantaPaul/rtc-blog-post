@@ -66,8 +66,9 @@
 		}
 	},
 	"textdomain": "blog-post",
-	"editorScript": "file:./index.js",
+	"editorScript": "file:./index.jsx",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js",
 	"render": "file:./render.php"
 }

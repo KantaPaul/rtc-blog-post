@@ -4,12 +4,17 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-
 .posts_wrapper {
-	@apply grid grid-cols-3 gap-4;
+	@apply flex gap-4;
 }
 .post_wrapper {
-	@apply col-span-1 bg-white border border-gray-50 rounded overflow-hidden relative shadow-sm;
+	@apply bg-white border border-gray-50 rounded overflow-hidden relative shadow-sm;
+}
+.editor_posts_wrapper {
+	@apply grid;
+	.post_wrapper {
+		@apply col-span-1;
+	}
 }
 .post_featured_image {
 	@apply w-full block;
@@ -84,5 +89,21 @@
 	}
 	&.post_slider_next_btn {
 		@apply -right-16;
+	}
+	&.front_next_slider_btn {
+		@apply -right-12;
+	}
+}
+
+.post_carousel_wrapper {
+	@apply relative;
+}
+.inner-carousel {
+	@apply w-full overflow-hidden;
+}
+.front_posts_wrapper {
+	@apply flex gap-0 transition-transform duration-300 ease-in-out;
+	.post_wrapper {
+		@apply mr-4;
 	}
 }

@@ -150,7 +150,7 @@ function Edit({
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("path", {
     d: "m15 18-6-6 6-6"
   }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "posts_wrapper",
+    className: "posts_wrapper editor_posts_wrapper",
     style: {
       gridTemplateColumns: `repeat(${sliderItemCount}, minmax(0, 1fr))`
     }
@@ -162,11 +162,11 @@ function Edit({
     className: "post_featured_image",
     onClick: e => e.preventDefault()
   }, post?._embedded?.["wp:featuredmedia"]?.slice(0, 1)?.map((item, index) => {
-    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    return item?.media_details?.sizes?.full?.source_url ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       key: index,
       src: item?.media_details?.sizes?.full?.source_url,
       alt: post?.title?.rendered
-    });
+    }) : "";
   })) : "", (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "post_content"
   }, showDate && post?.date ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
@@ -214,7 +214,7 @@ function Edit({
     onClick: e => e.preventDefault()
   }, post?.title?.rendered)) : "", showDesc && post?.excerpt?.rendered ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
     style: {
-      color: authorDescColor
+      color: descColor
     },
     dangerouslySetInnerHTML: {
       __html: post?.excerpt?.rendered
@@ -297,6 +297,13 @@ function Edit({
     }),
     help: "Show and hide the date in front end."
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Show meta", "blog-post"),
+    checked: showMeta,
+    onChange: value => setAttributes({
+      showMeta: value
+    }),
+    help: "Show and hide the meta in front end."
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Show title", "blog-post"),
     checked: showTitle,
     onChange: value => setAttributes({
@@ -310,13 +317,6 @@ function Edit({
       showDesc: value
     }),
     help: "Show and hide the desc in front end."
-  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Show meta", "blog-post"),
-    checked: showMeta,
-    onChange: value => setAttributes({
-      showMeta: value
-    }),
-    help: "Show and hide the meta in front end."
   }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Show author", "blog-post"),
     checked: showAuthor,
@@ -512,7 +512,7 @@ module.exports = window["wp"]["i18n"];
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/blog-post","version":"0.1.0","title":"Blog Post","category":"widgets","icon":"smiley","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"attributes":{"sliderItemCount":{"type":"string","default":3},"showFeaturedImage":{"type":"boolean","default":true},"showDate":{"type":"boolean","default":true},"showTitle":{"type":"boolean","default":true},"showDesc":{"type":"boolean","default":true},"showMeta":{"type":"boolean","default":true},"showAuthor":{"type":"boolean","default":true},"dateColor":{"type":"string","default":"#6B7280"},"titleColor":{"type":"string","default":"#000000"},"descColor":{"type":"string","default":"#000000"},"metaColor":{"type":"string","default":"#4B5563"},"authorTitleColor":{"type":"string","default":"#334155"},"authorDescColor":{"type":"string","default":"#64748B"}},"textdomain":"blog-post","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/blog-post","version":"0.1.0","title":"Blog Post","category":"widgets","icon":"smiley","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"attributes":{"sliderItemCount":{"type":"string","default":3},"showFeaturedImage":{"type":"boolean","default":true},"showDate":{"type":"boolean","default":true},"showTitle":{"type":"boolean","default":true},"showDesc":{"type":"boolean","default":true},"showMeta":{"type":"boolean","default":true},"showAuthor":{"type":"boolean","default":true},"dateColor":{"type":"string","default":"#6B7280"},"titleColor":{"type":"string","default":"#000000"},"descColor":{"type":"string","default":"#000000"},"metaColor":{"type":"string","default":"#4B5563"},"authorTitleColor":{"type":"string","default":"#334155"},"authorDescColor":{"type":"string","default":"#64748B"}},"textdomain":"blog-post","editorScript":"file:./index.jsx","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

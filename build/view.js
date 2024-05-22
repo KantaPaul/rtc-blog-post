@@ -1,3 +1,8 @@
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*********************!*\
+  !*** ./src/view.js ***!
+  \*********************/
 /**
  * Use this file for JavaScript code that you want to run in the front-end
  * on posts/pages that contain this block.
@@ -29,28 +34,31 @@ const sliderCount = Number(track.getAttribute("data-sliderCount"));
 let width = carousel.offsetWidth;
 let index = 0;
 window.addEventListener("resize", function () {
-	width = carousel.offsetWidth;
+  width = carousel.offsetWidth;
 });
 if (index === 0) {
-	prev.setAttribute("disabled", true);
+  prev.setAttribute("disabled", true);
 }
 next.addEventListener("click", function (e) {
-	e.preventDefault();
-	index = index + 1;
-	prev.removeAttribute("disabled");
-	track.style.transform = "translateX(" + index * -width + "px)";
-	if (sliderCount > items?.length - sliderCount * index) {
-		next.setAttribute("disabled", true);
-	}
-	if (index === 0) {
-		prev.setAttribute("disabled", true);
-	}
+  e.preventDefault();
+  index = index + 1;
+  prev.removeAttribute("disabled");
+  track.style.transform = "translateX(" + index * -width + "px)";
+  if (sliderCount > items?.length - sliderCount * index) {
+    next.setAttribute("disabled", true);
+  }
+  if (index === 0) {
+    prev.setAttribute("disabled", true);
+  }
 });
 prev.addEventListener("click", function () {
-	index = index - 1;
-	next.removeAttribute("disabled");
-	if (index === 0) {
-		prev.setAttribute("disabled", true);
-	}
-	track.style.transform = "translateX(" + index * -width + "px)";
+  index = index - 1;
+  next.removeAttribute("disabled");
+  if (index === 0) {
+    prev.setAttribute("disabled", true);
+  }
+  track.style.transform = "translateX(" + index * -width + "px)";
 });
+/******/ })()
+;
+//# sourceMappingURL=view.js.map
