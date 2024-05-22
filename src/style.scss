@@ -5,8 +5,84 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-create-block-blog-post {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+.posts_wrapper {
+	@apply grid grid-cols-3 gap-4;
+}
+.post_wrapper {
+	@apply col-span-1 bg-white border border-gray-50 rounded overflow-hidden relative shadow-sm;
+}
+.post_featured_image {
+	@apply w-full block;
+	> img {
+		@apply aspect-square max-w-full block h-60 w-full object-cover;
+	}
+}
+.post_date {
+	@apply flex items-center text-gray-500 mt-0 mb-4 gap-2 text-sm;
+}
+.post_content {
+	@apply p-4;
+}
+.post_title {
+	@apply text-xl m-0 mb-5;
+	> a {
+		@apply block no-underline text-black;
+	}
+}
+.post_terms {
+	@apply flex flex-wrap gap-1 text-sm mb-6;
+	.post_term {
+		@apply flex gap-1;
+		> a {
+			@apply block no-underline text-gray-600;
+		}
+		&:last-child {
+			> .post_separator {
+				@apply hidden;
+			}
+		}
+	}
+}
+.post_authors {
+	@apply flex flex-col gap-2;
+	> .post_author {
+		@apply flex gap-2;
+	}
+	.post_author_avatar {
+		@apply w-12 h-12 rounded-full shrink-0 border border-gray-50 bg-slate-50 block overflow-hidden;
+		> img {
+			@apply block max-w-full;
+		}
+	}
+	.post_author_title {
+		@apply m-0 text-base mb-1;
+		> a {
+			@apply block no-underline text-slate-700;
+		}
+	}
+	.post_author_desc {
+		@apply m-0 text-sm text-slate-500;
+	}
+}
+
+.post_desc {
+	@apply m-0 mb-5;
+	> p {
+		@apply m-0;
+	}
+}
+.post_carousel_wrapper {
+	@apply relative;
+}
+.post_slider_btn {
+	@apply bg-gray-800 border-none rounded-full h-10 w-10 flex shadow-md disabled:cursor-not-allowed disabled:opacity-70 absolute top-1/2 transform -translate-y-1/2 z-10 hover:bg-slate-900 transition-colors duration-300 text-lg text-white cursor-pointer;
+	> svg {
+		@apply m-auto;
+	}
+	&.post_slider_prev_btn {
+		@apply -left-16;
+	}
+	&.post_slider_next_btn {
+		@apply -right-16;
+	}
 }

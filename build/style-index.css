@@ -190,8 +190,10 @@
     margin: auto
 }
 .post_slider_btn.post_slider_prev_btn {
-    right: -4rem
-}
-.post_slider_btn.post_slider_next_btn {
     left: -4rem
 }
+.post_slider_btn.post_slider_next_btn {
+    right: -4rem
+}
+
+/*# sourceMappingURL=style-index.css.map*/

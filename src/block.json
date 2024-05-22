@@ -12,6 +12,10 @@
 		"html": false
 	},
 	"attributes": {
+		"sliderItemCount": {
+			"type": "string",
+			"default": 3
+		},
 		"showFeaturedImage": {
 			"type": "boolean",
 			"default": true
@@ -21,6 +25,10 @@
 			"default": true
 		},
 		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"showDesc": {
 			"type": "boolean",
 			"default": true
 		},
@@ -34,23 +42,27 @@
 		},
 		"dateColor": {
 			"type": "string",
-			"default": "#000000"
+			"default": "#6B7280"
 		},
 		"titleColor": {
 			"type": "string",
 			"default": "#000000"
 		},
-		"metaColor": {
+		"descColor": {
 			"type": "string",
 			"default": "#000000"
+		},
+		"metaColor": {
+			"type": "string",
+			"default": "#4B5563"
 		},
 		"authorTitleColor": {
 			"type": "string",
-			"default": "#000000"
+			"default": "#334155"
 		},
 		"authorDescColor": {
 			"type": "string",
-			"default": "#000000"
+			"default": "#64748B"
 		}
 	},
 	"textdomain": "blog-post",

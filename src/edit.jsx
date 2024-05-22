@@ -8,6 +8,7 @@ import {
 	PanelBody,
 	Spinner,
 	ToggleControl,
+	__experimentalInputControl as InputControl,
 } from "@wordpress/components";
 import { useEffect, useState } from "@wordpress/element";
 import { __ } from "@wordpress/i18n";
@@ -22,12 +23,15 @@ dayjs.extend(timezone);
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
+		sliderItemCount,
 		showFeaturedImage,
 		showDate,
 		showTitle,
+		showDesc,
 		showMeta,
 		showAuthor,
 		titleColor,
+		descColor,
 		dateColor,
 		metaColor,
 		authorTitleColor,
@@ -66,6 +70,11 @@ export default function Edit({ attributes, setAttributes }) {
 			onChange: (value) => setAttributes({ titleColor: value }),
 		},
 		{
+			label: __("Description color", "blog-post"),
+			color: descColor,
+			onChange: (value) => setAttributes({ descColor: value }),
+		},
+		{
 			label: __("Date color", "blog-post"),
 			color: dateColor,
 			onChange: (value) => setAttributes({ dateColor: value }),
@@ -87,6 +96,23 @@ export default function Edit({ attributes, setAttributes }) {
 		},
 	];
 
+	const [activeIndex, setActiveIndex] = useState(0);
+
+	const visibleSlides = posts?.slice(
+		activeIndex,
+		activeIndex + Number(sliderItemCount),
+	);
+
+	const goToPrevSlide = () => {
+		setActiveIndex(
+			(prevIndex) => (prevIndex - 1 + posts?.length) % posts?.length,
+		);
+	};
+
+	const goToNextSlide = () => {
+		setActiveIndex((prevIndex) => (prevIndex + 1) % posts?.length);
+	};
+
 	return (
 		<div {...blockProps}>
 			{loading ? (
@@ -96,73 +122,211 @@ export default function Edit({ attributes, setAttributes }) {
 					{error}
 				</Notice>
 			) : (
-				posts?.map((post, index) => (
-					<div key={index}>
-						{showFeaturedImage ? (
-							<a href={post?.link}>
-								{post?._embedded?.["wp:featuredmedia"]
-									?.slice(0, 1)
-									?.map((item, index) => {
-										return (
-											<img
-												key={index}
-												src={item?.media_details?.sizes?.full?.source_url}
-												alt={post?.title?.rendered}
-											/>
-										);
-									})}
-							</a>
-						) : (
-							""
-						)}
-						{showDate ? (
-							<p style={{ color: dateColor }}>
-								{dayjs().to(dayjs.utc(post?.date).tz(dayjs.tz.guess()))}
-							</p>
-						) : (
-							""
-						)}
+				<div className="post_carousel_wrapper">
+					<button
+						disabled={
+							activeIndex === 0 ||
+							visibleSlides?.length < Number(sliderItemCount)
+						}
+						onClick={goToPrevSlide}
+						className="post_slider_btn post_slider_prev_btn"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="1em"
+							height="1em"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-chevron-left"
+						>
+							<path d="m15 18-6-6 6-6" />
+						</svg>
+					</button>
+					<div
+						className="posts_wrapper"
+						style={{
+							gridTemplateColumns: `repeat(${sliderItemCount}, minmax(0, 1fr))`,
+						}}
+					>
+						{visibleSlides?.map((post, index) => (
+							<div key={index} className="post_wrapper">
+								{showFeaturedImage &&
+								post?._embedded?.["wp:featuredmedia"]?.length !== 0 ? (
+									<a
+										href={post?.link}
+										className="post_featured_image"
+										onClick={(e) => e.preventDefault()}
+									>
+										{post?._embedded?.["wp:featuredmedia"]
+											?.slice(0, 1)
+											?.map((item, index) => {
+												return (
+													<img
+														key={index}
+														src={item?.media_details?.sizes?.full?.source_url}
+														alt={post?.title?.rendered}
+													/>
+												);
+											})}
+									</a>
+								) : (
+									""
+								)}
 
-						{showTitle ? (
-							<h2>
-								<a style={{ color: titleColor }} href={post?.link}>
-									{post?.title?.rendered}
-								</a>
-							</h2>
-						) : (
-							""
-						)}
-
-						{showMeta
-							? post?._embedded?.["wp:term"]?.map((item) =>
-									item?.map((data, index) => (
-										<div key={index}>
-											<a href={data?.link} style={{ color: metaColor }}>
-												{data?.name}
-											</a>
-										</div>
-									)),
-								)
-							: ""}
-						{showAuthor
-							? post?._embedded?.author?.map((item, index) => (
-									<div key={index}>
-										<h3>
-											<a style={{ color: authorTitleColor }} href={item?.link}>
-												{item?.name}
-											</a>
-										</h3>
-										<p style={{ color: authorDescColor }}>
-											{item?.description}
+								<div className="post_content">
+									{showDate && post?.date ? (
+										<p style={{ color: dateColor }} className="post_date">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="1em"
+												height="1em"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="lucide lucide-clock-1"
+											>
+												<circle cx="12" cy="12" r="10" />
+												<polyline points="12 6 12 12 14.5 8" />
+											</svg>
+											{dayjs().to(dayjs.utc(post?.date).tz(dayjs.tz.guess()))}
 										</p>
-										<a href={item?.url}>
-											<img src={item?.avatar_urls?.[96]} alt={item?.name} />
-										</a>
-									</div>
-								))
-							: ""}
+									) : (
+										""
+									)}
+
+									{showMeta && post?._embedded?.["wp:term"]?.length !== 0 ? (
+										<div className="post_terms">
+											{post?._embedded?.["wp:term"]?.map((item) =>
+												item?.map((data, index) =>
+													data?.name ? (
+														<div key={index} className="post_term">
+															<a
+																href={data?.link}
+																style={{ color: metaColor }}
+																onClick={(e) => e.preventDefault()}
+															>
+																{data?.name}
+															</a>
+															<span className="post_separator">,</span>
+														</div>
+													) : (
+														""
+													),
+												),
+											)}
+										</div>
+									) : (
+										""
+									)}
+
+									{showTitle && post?.title?.rendered ? (
+										<h2 className="post_title">
+											<a
+												style={{ color: titleColor }}
+												href={post?.link}
+												onClick={(e) => e.preventDefault()}
+											>
+												{post?.title?.rendered}
+											</a>
+										</h2>
+									) : (
+										""
+									)}
+
+									{showDesc && post?.excerpt?.rendered ? (
+										<p
+											style={{ color: authorDescColor }}
+											dangerouslySetInnerHTML={{
+												__html: post?.excerpt?.rendered,
+											}}
+											className="post_desc"
+										/>
+									) : (
+										""
+									)}
+
+									{showAuthor && post?._embedded?.author?.length !== 0 ? (
+										<div className="post_authors">
+											{post?._embedded?.author?.map((item, index) => (
+												<div key={index} className="post_author">
+													{item?.avatar_urls?.[96] ? (
+														<a
+															href={item?.url}
+															onClick={(e) => e.preventDefault()}
+															className="post_author_avatar"
+														>
+															<img
+																src={item?.avatar_urls?.[96]}
+																alt={item?.name}
+															/>
+														</a>
+													) : (
+														""
+													)}
+													<div className="post_author_content">
+														{item?.name ? (
+															<h3 className="post_author_title">
+																<a
+																	style={{ color: authorTitleColor }}
+																	href={item?.link}
+																	onClick={(e) => e.preventDefault()}
+																>
+																	{item?.name}
+																</a>
+															</h3>
+														) : (
+															""
+														)}
+														{item?.description ? (
+															<p
+																style={{ color: authorDescColor }}
+																dangerouslySetInnerHTML={{
+																	__html: item?.description,
+																}}
+																className="post_author_desc"
+															/>
+														) : (
+															""
+														)}
+													</div>
+												</div>
+											))}
+										</div>
+									) : (
+										""
+									)}
+								</div>
+							</div>
+						))}
 					</div>
-				))
+					<button
+						onClick={goToNextSlide}
+						className="post_slider_btn post_slider_next_btn"
+						disabled={posts?.length - Number(sliderItemCount) === activeIndex}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							width="1em"
+							height="1em"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="lucide lucide-chevron-right"
+						>
+							<path d="m9 18 6-6-6-6" />
+						</svg>
+					</button>
+				</div>
 			)}
 			<InspectorControls>
 				{/* General settings */}
@@ -170,6 +334,17 @@ export default function Edit({ attributes, setAttributes }) {
 					title={__("Content control settings", "blog-post")}
 					initialOpen={true}
 				>
+					<InputControl
+						value={sliderItemCount}
+						onChange={(nextValue) => {
+							setAttributes({ sliderItemCount: nextValue });
+							setActiveIndex(0);
+						}}
+						type="number"
+						label={__("Slider items count", "blog-post")}
+						max={5}
+						min={1}
+					/>
 					<ToggleControl
 						label={__("Show featured image", "blog-post")}
 						checked={showFeaturedImage}
@@ -187,6 +362,12 @@ export default function Edit({ attributes, setAttributes }) {
 						checked={showTitle}
 						onChange={(value) => setAttributes({ showTitle: value })}
 						help="Show and hide the title in front end."
+					/>
+					<ToggleControl
+						label={__("Show desc", "blog-post")}
+						checked={showDesc}
+						onChange={(value) => setAttributes({ showDesc: value })}
+						help="Show and hide the desc in front end."
 					/>
 					<ToggleControl
 						label={__("Show meta", "blog-post")}
