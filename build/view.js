@@ -39,8 +39,7 @@ window.addEventListener("resize", function () {
 if (index === 0) {
   prev.setAttribute("disabled", true);
 }
-next.addEventListener("click", function (e) {
-  e.preventDefault();
+function nextPhase() {
   index = index + 1;
   prev.removeAttribute("disabled");
   track.style.transform = "translateX(" + index * -width + "px)";
@@ -50,15 +49,30 @@ next.addEventListener("click", function (e) {
   if (index === 0) {
     prev.setAttribute("disabled", true);
   }
-});
-prev.addEventListener("click", function () {
+}
+function prevPhase() {
   index = index - 1;
   next.removeAttribute("disabled");
   if (index === 0) {
     prev.setAttribute("disabled", true);
   }
   track.style.transform = "translateX(" + index * -width + "px)";
+}
+next.addEventListener("click", function () {
+  nextPhase();
 });
+prev.addEventListener("click", function () {
+  prevPhase();
+});
+document.body.addEventListener("keydown", function (e) {
+  var code = e.keyCode;
+  if (code == 39 && sliderCount < items?.length - sliderCount * index) {
+    nextPhase();
+  }
+  if (code == 37 && index !== 0) {
+    prevPhase();
+  }
+}, false);
 /******/ })()
 ;
 //# sourceMappingURL=view.js.map
