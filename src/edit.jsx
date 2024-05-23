@@ -36,14 +36,16 @@ export default function Edit({ attributes, setAttributes }) {
 		metaColor,
 		authorTitleColor,
 		authorDescColor,
+		siteContent,
 	} = attributes;
 	const blockProps = useBlockProps();
 	const [posts, setPosts] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [refetch, setReFetch] = useState(false);
 
 	useEffect(() => {
-		fetch("https://wptavern.com/wp-json/wp/v2/posts?_embed")
+		fetch(`https://${siteContent}/wp-json/wp/v2/posts?_embed`)
 			.then((response) => {
 				if (!response?.ok) {
 					throw new Error("Network response was not ok");
@@ -53,6 +55,7 @@ export default function Edit({ attributes, setAttributes }) {
 			.then((posts) => {
 				setPosts(posts);
 				setLoading(false);
+				setReFetch(false);
 			})
 			.catch((error) => {
 				console.error("Error fetching posts:", error);
@@ -61,7 +64,7 @@ export default function Edit({ attributes, setAttributes }) {
 				);
 				setLoading(false);
 			});
-	}, []);
+	}, [siteContent, refetch]);
 
 	const colorSettings = [
 		{
@@ -120,6 +123,15 @@ export default function Edit({ attributes, setAttributes }) {
 			) : error ? (
 				<Notice status="error" isDismissible={false}>
 					{error}
+					<span
+						onClick={() => {
+							setReFetch(true);
+							setError(null);
+						}}
+						className="refetchBtn"
+					>
+						Refetch
+					</span>
 				</Notice>
 			) : (
 				<div className="post_carousel_wrapper">
@@ -336,6 +348,13 @@ export default function Edit({ attributes, setAttributes }) {
 					title={__("Content control settings", "blog-post")}
 					initialOpen={true}
 				>
+					<InputControl
+						value={siteContent}
+						onChange={(value) => {
+							setAttributes({ siteContent: value ?? "wptavern.com" });
+						}}
+						label={__("Slider content", "blog-post")}
+					/>
 					<InputControl
 						value={sliderItemCount}
 						onChange={(nextValue) => {

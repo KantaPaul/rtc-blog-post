@@ -121,3 +121,6 @@
 		}
 	}
 }
+.refetchBtn {
+	@apply ml-3 bg-red-800 border-0 text-white px-4 py-2 rounded cursor-pointer inline-flex;
+}

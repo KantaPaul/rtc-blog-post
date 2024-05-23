@@ -1,8 +1,8 @@
 <?php
 
-function fetch_wp_tavern_posts()
+function fetch_wp_tavern_posts($params = "wptavern.com")
 {
-    $api_url = 'https://wptavern.com/wp-json/wp/v2/posts?_embed';
+    $api_url = 'https://' . $params . '/wp-json/wp/v2/posts?_embed';
 
     // Make the GET request
     $response = wp_remote_get($api_url);

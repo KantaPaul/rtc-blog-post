@@ -59,14 +59,16 @@ function Edit({
     dateColor,
     metaColor,
     authorTitleColor,
-    authorDescColor
+    authorDescColor,
+    siteContent
   } = attributes;
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps)();
   const [posts, setPosts] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)([]);
   const [loading, setLoading] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(true);
   const [error, setError] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(null);
+  const [refetch, setReFetch] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useState)(false);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_3__.useEffect)(() => {
-    fetch("https://wptavern.com/wp-json/wp/v2/posts?_embed").then(response => {
+    fetch(`https://${siteContent}/wp-json/wp/v2/posts?_embed`).then(response => {
       if (!response?.ok) {
         throw new Error("Network response was not ok");
       }
@@ -74,12 +76,13 @@ function Edit({
     }).then(posts => {
       setPosts(posts);
       setLoading(false);
+      setReFetch(false);
     }).catch(error => {
       console.error("Error fetching posts:", error);
       setError((0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Error fetching posts. Please try again later.", "blog-post"));
       setLoading(false);
     });
-  }, []);
+  }, [siteContent, refetch]);
   const colorSettings = [{
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Title color", "blog-post"),
     color: titleColor,
@@ -130,7 +133,13 @@ function Edit({
   }, loading ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Spinner, null) : error ? (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Notice, {
     status: "error",
     isDismissible: false
-  }, error) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, error, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    onClick: () => {
+      setReFetch(true);
+      setError(null);
+    },
+    className: "refetchBtn"
+  }, "Refetch")) : (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "post_carousel_wrapper"
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
     disabled: activeIndex === 0 || visibleSlides?.length < Number(sliderItemCount),
@@ -271,6 +280,14 @@ function Edit({
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Content control settings", "blog-post"),
     initialOpen: true
   }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalInputControl, {
+    value: siteContent,
+    onChange: value => {
+      setAttributes({
+        siteContent: value !== null && value !== void 0 ? value : "wptavern.com"
+      });
+    },
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_4__.__)("Slider content", "blog-post")
+  }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.__experimentalInputControl, {
     value: sliderItemCount,
     onChange: nextValue => {
       setAttributes({
@@ -512,7 +529,7 @@ module.exports = window["wp"]["i18n"];
 /***/ ((module) => {
 
 "use strict";
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/blog-post","version":"0.1.0","title":"Blog Post","category":"widgets","icon":"smiley","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"attributes":{"sliderItemCount":{"type":"string","default":3},"showFeaturedImage":{"type":"boolean","default":true},"showDate":{"type":"boolean","default":true},"showTitle":{"type":"boolean","default":true},"showDesc":{"type":"boolean","default":true},"showMeta":{"type":"boolean","default":true},"showAuthor":{"type":"boolean","default":true},"dateColor":{"type":"string","default":"#6B7280"},"titleColor":{"type":"string","default":"#000000"},"descColor":{"type":"string","default":"#000000"},"metaColor":{"type":"string","default":"#4B5563"},"authorTitleColor":{"type":"string","default":"#334155"},"authorDescColor":{"type":"string","default":"#64748B"}},"textdomain":"blog-post","editorScript":"file:./index.jsx","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/blog-post","version":"0.1.0","title":"Blog Post","category":"widgets","icon":"smiley","description":"Example block scaffolded with Create Block tool.","example":{},"supports":{"html":false},"attributes":{"siteContent":{"type":"string","default":"wptavern.com"},"sliderItemCount":{"type":"string","default":3},"showFeaturedImage":{"type":"boolean","default":true},"showDate":{"type":"boolean","default":true},"showTitle":{"type":"boolean","default":true},"showDesc":{"type":"boolean","default":true},"showMeta":{"type":"boolean","default":true},"showAuthor":{"type":"boolean","default":true},"dateColor":{"type":"string","default":"#6B7280"},"titleColor":{"type":"string","default":"#000000"},"descColor":{"type":"string","default":"#000000"},"metaColor":{"type":"string","default":"#4B5563"},"authorTitleColor":{"type":"string","default":"#334155"},"authorDescColor":{"type":"string","default":"#64748B"}},"textdomain":"blog-post","editorScript":"file:./index.jsx","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","render":"file:./render.php"}');
 
 /***/ })
 

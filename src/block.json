@@ -12,6 +12,10 @@
 		"html": false
 	},
 	"attributes": {
+		"siteContent": {
+			"type": "string",
+			"default": "wptavern.com"
+		},
 		"sliderItemCount": {
 			"type": "string",
 			"default": 3

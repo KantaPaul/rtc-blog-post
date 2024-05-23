@@ -254,3 +254,19 @@
     flex: 0 0 calc(100% / var(--sliderCount) - 16px);
   }
 }
+
+.refetchBtn {
+  margin-right: 0.75rem;
+  display: inline-flex;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  border-width: 0px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 27 27 / var(--tw-bg-opacity));
+  padding-right: 1rem;
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}

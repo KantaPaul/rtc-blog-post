@@ -1,6 +1,6 @@
 <?php
 extract($attributes);
-$posts = fetch_wp_tavern_posts();
+$posts = fetch_wp_tavern_posts($siteContent);
 ?>
 
 <div class="post_carousel_wrapper" style="--sliderCount: <?php echo esc_attr($sliderItemCount); ?>">
