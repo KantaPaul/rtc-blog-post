@@ -3,17 +3,17 @@ extract($attributes);
 $posts = fetch_wp_tavern_posts();
 ?>
 
-<div class="post_carousel_wrapper">
+<div class="post_carousel_wrapper" style="--sliderCount: <?php echo esc_attr($sliderItemCount); ?>">
     <button class="post_slider_btn post_slider_prev_btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left">
             <path d="m15 18-6-6 6-6" />
         </svg>
     </button>
-    <div class="inner-carousel">
+    <div class="post_carousel_inner">
         <div class="posts_wrapper front_posts_wrapper" data-sliderCount="<?php echo esc_attr($sliderItemCount) ?>">
             <?php if (!empty($posts) && is_array($posts)) { ?>
                 <?php foreach ($posts as $key => $post) { ?>
-                    <div class="post_wrapper" style="max-width: calc(<?php echo esc_attr(100 / $sliderItemCount); ?>% - 16px); flex: 0 0 calc(<?php echo esc_attr(100 / $sliderItemCount); ?>% - 16px);">
+                    <div class="post_wrapper">
                         <?php if ($showFeaturedImage && !empty($post->_embedded->{"wp:featuredmedia"})) { ?>
                             <a href="<?php echo esc_url($post->link) ?>" class="post_featured_image">
                                 <?php foreach ($post->_embedded->{"wp:featuredmedia"} as $key => $item) { ?>

@@ -28,6 +28,8 @@ const items = document.querySelectorAll(".post_wrapper");
 const sliderCount = Number(track.getAttribute("data-sliderCount"));
 let width = carousel.offsetWidth;
 let index = 0;
+let isPressed = false;
+let cursorX;
 window.addEventListener("resize", function () {
 	width = carousel.offsetWidth;
 });
@@ -37,7 +39,7 @@ if (index === 0) {
 function nextPhase() {
 	index = index + 1;
 	prev.removeAttribute("disabled");
-	track.style.transform = "translateX(" + index * -width + "px)";
+	track.style.left = "" + index * -width + "px";
 	if (sliderCount > items?.length - sliderCount * index) {
 		next.setAttribute("disabled", true);
 	}
@@ -51,7 +53,7 @@ function prevPhase() {
 	if (index === 0) {
 		prev.setAttribute("disabled", true);
 	}
-	track.style.transform = "translateX(" + index * -width + "px)";
+	track.style.left = "" + index * -width + "px";
 }
 next.addEventListener("click", function () {
 	nextPhase();
@@ -72,3 +74,25 @@ document.body.addEventListener(
 	},
 	false,
 );
+
+track.addEventListener("mousedown", (e) => {
+	isPressed = true;
+	cursorX = e.offsetX - track.offsetLeft;
+	track.style.cursor = "grabbing";
+});
+
+track.addEventListener("mouseup", () => {
+	track.style.cursor = "grab";
+});
+
+window.addEventListener("mouseup", () => {
+	isPressed = false;
+});
+
+track.addEventListener("mousemove", (e) => {
+	if (!isPressed) return;
+	e.preventDefault();
+	if (window.innerWidth <= 767) {
+		track.style.left = `${Number(e.offsetX) - Number(cursorX)}px`;
+	}
+});
