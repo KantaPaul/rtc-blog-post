@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+
 function fetch_wp_tavern_posts($params = "wptavern.com")
 {
     $api_url = 'https://' . $params . '/wp-json/wp/v2/posts?_embed';
