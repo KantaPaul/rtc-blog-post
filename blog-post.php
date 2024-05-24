@@ -38,3 +38,9 @@ add_action('init', 'create_block_blog_post_block_init');
 if (file_exists(BLOG_POST_HELPER_ABS_PATH . 'includes/functions.php')) {
     include_once BLOG_POST_HELPER_ABS_PATH . 'includes/functions.php';
 }
+
+function loadTextdomain()
+{
+    load_plugin_textdomain('blog-post', false, dirname(plugin_basename(__FILE__)) . '/languages');
+}
+add_action('plugins_loaded', 'loadTextdomain');
